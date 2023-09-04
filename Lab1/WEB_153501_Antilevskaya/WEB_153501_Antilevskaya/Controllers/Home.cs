@@ -2,12 +2,11 @@
 
 namespace WEB_153501_Antilevskaya.Controllers
 {
-    [Controller]
-    public class Home
+    public class Home : Controller
     {
-        public string Index()
+        public IActionResult Index()
         {
-            return ("Hello World!");
+            return View();
         }
     }
 }
