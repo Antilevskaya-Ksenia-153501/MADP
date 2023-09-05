@@ -13,22 +13,115 @@
         <title>Index</title>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/font-awesome/all.min.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
     </head>
     <body>
         <header>
             <div class="container">
-                <span class="nav-color">Заголовок страницы</span>
+                <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+                    <a class="navbar-brand" href="#">WebLabsV02</a>
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active" href="#">Лб 1</a>
+                        <a class="nav-item nav-link" href="#">Каталог</a>
+                        <a class="nav-item nav-link" href="#">Администрирование</a>
+                    </div>
+                    <a href="#" class="navbar-text ms-auto">00,0 руб <i class="fa-solid fa-cart-shopping"></i>(0)</a>
+                    <div class="dropdown ms-4 nav-color">
+                        <button class="btn btn-secondary dropdown-toggle"
+                            type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        User@gmail.com
+                        <!-- <img src="images/default-profile-picture.png" width="30"
+                                   alt="User" class="rounded nav-color" /> -->
+                        <i class="fa-solid fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <span class="dropdown-item-text">
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form id="logoutForm" class="form-inline">
+                                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
             </div>
         </header>
+
         <main class="container">
-            Содержимое страницы
+            <h1>Лабораторная работа 1</h1>
+            <h2>Список</h2>
+            <ol type="A" start="1">
+                <li>элемент 0 списка</li>
+                <li>элемент 1 списка</li>
+                <li>элемент 2 списка</li>
+                <li>элемент 3 списка</li>
+                <li>элемент 4 списка</li>
+            </ol>
+            <hr>
+            <h2>Форма</h2>
+            <form action="" method="get">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="checkbox1" name="checkbox" />
+                    <label class="form-check-label" for="checkbox1">Чек-бокс 1</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="checkbox2" name="checkbox" />
+                    <label class="form-check-label" for="checkbox2">Чек-бокс 2</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="radio1" name="radio"/>
+                    <label class="form-check-label" for="radio1">Радио-1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="radio2" name="radio" />
+                    <label class="form-check-label" for="radio2">Радио-2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="radio3" name="radio" />
+                    <label class="form-check-label" for="radio1">Радио-3</label>
+                </div>
+
+                 <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="name">Логин:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Введите имя" id="name" />
+                    </div>
+                    <label class="col-sm-2 col-form-label" for="password">Пароль:</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" placeholder="Введите пароль" id="password" />
+                    </div>
+                </div>
+
+            <input type="submit" value="Отправить" />
+            </form>
         </main>
+
         <footer>
             <div class="container">
-                <span class="nav-color">Подвал страницы</span>
+                <div class="navbar navbar-dark navbar-expand-md bg-dark">
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-item nav-link" href="http://www.facebook.com">
+                            <i class="fa-brands fa-facebook-f fa-2x"></i>
+                        </a>
+                        <a class="nav-item nav-link" href="http://www.vk.com">
+                            <i class="fa-brands fa-vk fa-2x"></i>
+                        </a>
+                        <a class="nav-item nav-link" href="http://www.twitter.com">
+                            <i class="fa-brands fa-twitter fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </footer>
+
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
