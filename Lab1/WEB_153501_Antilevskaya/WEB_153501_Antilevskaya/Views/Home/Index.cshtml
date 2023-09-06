@@ -25,27 +25,28 @@
         <input type="checkbox" class="form-check-input" id="checkbox2" name="checkbox" />
         <label class="form-check-label" for="checkbox2">Чек-бокс 2</label>
     </div>
+
     <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" id="radio1" name="radio"/>
+        <input type="radio" class="form-check-input" id="radio1" name="radio" value="1"/>
         <label class="form-check-label" for="radio1">Радио-1</label>
     </div>
     <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" id="radio2" name="radio" />
+        <input type="radio" class="form-check-input" id="radio2" name="radio" value="2"/>
         <label class="form-check-label" for="radio2">Радио-2</label>
     </div>
     <div class="form-check form-check-inline">
-        <input type="radio" class="form-check-input" id="radio3" name="radio" />
+        <input type="radio" class="form-check-input" id="radio3" name="radio" value="3"/>
         <label class="form-check-label" for="radio1">Радио-3</label>
     </div>
 
     <div class="mb-3 row">
         <label class="col-sm-2 col-form-label" for="name">Логин:</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="Введите имя" id="name" />
+            <input type="text" class="form-control" placeholder="Введите имя" id="name" name="login_value" value=""/>
         </div>
         <label class="col-sm-2 col-form-label" for="password">Пароль:</label>
         <div class="col-sm-10">
-            <input type="password" class="form-control" placeholder="Введите пароль" id="password" />
+            <input type="password" class="form-control" placeholder="Введите пароль" id="password" name="password_value" value=""/>
         </div>
     </div>
     <input type="submit" value="Отправить" />
