@@ -6,6 +6,7 @@ namespace WEB_153501_Antilevskaya.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["TitlePage"] = "Лабораторная работа 2";
             return View();
         }
     }
