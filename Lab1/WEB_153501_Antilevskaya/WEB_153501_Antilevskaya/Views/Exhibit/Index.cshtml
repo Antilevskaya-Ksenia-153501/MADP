@@ -2,9 +2,11 @@
 
 @{
     ViewData["Title"] = "Index";
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
 }
 
-<h1>Index</h1>
+<h1>Exhibits</h1>
 
 <!--<p>
     <a asp-action="Create">Create New</a>
@@ -56,17 +58,55 @@
         </tr>
     }
     </tbody>
-</table>
--->
+</table>-->
+
+
+<div class="col-2 border-2">
+    <ul class="nav ">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               href="#"
+               role="button"
+               aria-expanded="false">
+                @ViewData["currentCategory"]
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item"
+                       asp-controller="Exhibit"
+                       asp-route-category=@null>All</a>
+                </li>
+                @foreach (var item in ViewBag.Categories)
+                {
+                    <li>
+                        <a class="dropdown-item"
+                       asp-controller="Exhibit"
+                       asp-route-category="@item.NormalizedName">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var item in Model) {
         <div class="col">
-            <div class="card h-100">
-                <img src="@item.Image" class="card-img-top" alt="Exhibit picture">
+            <div class="card h-100 border-dark mb-3">
+                <img src="@item.Image" class="card-img-top" height="40%" width="100%" alt="Exhibit picture">
                 <div class="card-body">
                     <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5>
                     <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                    <div class="card-footer text-muted">
+                        <form method="get" action="/Cart/Add">
+                            <input type="hidden" name="exhibitId" value="@item.Id" />
+                            <input type="hidden" name="returnUrl" value="@returnUrl" />
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>   
                 </div>
             </div>
         </div>
