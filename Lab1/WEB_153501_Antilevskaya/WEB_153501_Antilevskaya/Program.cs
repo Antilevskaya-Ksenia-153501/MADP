@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WEB_153501_Antilevskaya.Data;
 using WEB_153501_Antilevskaya.Services.CategoryService;
+using WEB_153501_Antilevskaya.Services.ExhibitService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<ICategoryService, ICategoryService>();
+builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
+builder.Services.AddScoped<IExhibitService, MemoryExhibitService>();
 
 var app = builder.Build();
 

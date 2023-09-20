@@ -1,7 +1,7 @@
 ﻿namespace WEB_153501_Antilevskaya.Domain.Entities;
 public class Exhibit
 {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public Category? Category { get; set; }
