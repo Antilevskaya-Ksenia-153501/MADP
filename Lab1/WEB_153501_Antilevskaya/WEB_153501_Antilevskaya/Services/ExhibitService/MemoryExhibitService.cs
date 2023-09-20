@@ -23,7 +23,7 @@ public class MemoryExhibitService:IExhibitService
                         Price=100, Image="Images/Harmony Unveiled.jpg"},
             new Exhibit{Id = 2, Title="Whispering Serenity", Description="\"Whispering Serenity\" is a captivating sculpture that evokes a sense of calm and tranquility. Crafted with meticulous attention to detail, the sculpture stands as a testament to the beauty of serenity in the midst of chaos.",
                         Category=_categories.Find(obj=>obj.NormalizedName.Equals("sculpture")),
-                        Price=140, Image="Images/Whispering Serenity.jpg"},
+                       Price=140, Image="Images/Whispering Serenity.jpg"},
 
         };
     }
