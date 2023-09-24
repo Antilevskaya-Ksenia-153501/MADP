@@ -1,4 +1,5 @@
-﻿using WEB_153501_Antilevskaya.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using WEB_153501_Antilevskaya.Domain.Entities;
 using WEB_153501_Antilevskaya.Domain.Models;
 using WEB_153501_Antilevskaya.Services.CategoryService;
 
@@ -33,12 +34,20 @@ public class MemoryExhibitService:IExhibitService
 
         };
     }
-    public Task<ResponseData<ListModel<Exhibit>>> GetExhibitListAsync(string? categoryNormalizedName, int pageNo = 1)
+    public Task<ResponseData<ListModel<Exhibit>>> GetExhibitListAsync([FromServices]IConfiguration config, string? categoryNormalizedName, int pageNo = 1)
     {
         var exhibits = new ListModel<Exhibit>();
+        //Get exhibits by categories
         exhibits.Items = _exhibits.Where(obj => categoryNormalizedName == null ||
                                         obj.Category.NormalizedName.Equals(categoryNormalizedName)).ToList();
+
+        //Get exhibits by page 
+        int pageSize = config.GetValue<int>("ItemsPerPage");
+        int totalPage = (int)Math.Ceiling((double)exhibits.Items.Count / pageSize);
+        List<Exhibit> selectedExhibitsItems = exhibits.Items.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+        exhibits.Items = selectedExhibitsItems;
         exhibits.CurrentPage = pageNo;
+        exhibits.TotalPages = totalPage;
 
         var result = new ResponseData<ListModel<Exhibit>>();
         result.Data = exhibits;
