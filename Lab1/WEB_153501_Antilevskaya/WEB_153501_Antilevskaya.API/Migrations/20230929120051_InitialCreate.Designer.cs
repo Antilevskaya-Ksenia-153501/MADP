@@ -11,7 +11,7 @@ using WEB_153501_Antilevskaya.API.Data;
 namespace WEB_153501_Antilevskaya.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230925084032_InitialCreate")]
+    [Migration("20230929120051_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
