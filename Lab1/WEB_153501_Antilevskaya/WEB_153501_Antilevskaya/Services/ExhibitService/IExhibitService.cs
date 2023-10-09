@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WEB_153501_Antilevskaya.Services.ExhibitService;
 public interface IExhibitService
 { 
-    public Task<ResponseData<ListModel<Exhibit>>> GetExhibitListAsync([FromServices] IConfiguration config, string? categoryNormalizedName, int pageNo = 1);
-
+    public Task<ResponseData<ListModel<Exhibit>>> GetExhibitListAsync(string? categoryNormalizedName, int pageNo = 1);
     /* Create a little bit later
     public Task<ResponseData<Exhibit>> GetExhibitByIdAsync(int id);
     public Task UpdateExhibitAsync(int id, Exhibit exhibit, IFormFile? formFile);

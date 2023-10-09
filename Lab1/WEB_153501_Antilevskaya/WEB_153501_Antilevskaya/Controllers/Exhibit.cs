@@ -21,15 +21,17 @@ namespace WEB_153501_Antilevskaya.Controllers
             this.exhibitService = exhibitService;
             this.configuration = configuration;
         }
+
         public async Task<IActionResult> Index(string? category, int page = 1)
         {
-            var exhibitResponse = await exhibitService.GetExhibitListAsync(configuration, category, page);
+            var exhibitResponse = await exhibitService.GetExhibitListAsync(category, page);
             if (!exhibitResponse.Success)
                 return NotFound(exhibitResponse.ErrorMessage);
             ViewBag.Categories = categoryService.GetCategoryListAsync().Result.Data;
             ViewData["currentCategory"] = category;
             ViewBag.previousPage = page == 1 ? 1 : page - 1;
             ViewBag.nextPage = page == exhibitResponse.Data.TotalPages ? exhibitResponse.Data.TotalPages : page + 1;
+            var temp = exhibitResponse.Data;
             return View(exhibitResponse.Data);
         }
         private IActionResult NotFound(object errorMessage)

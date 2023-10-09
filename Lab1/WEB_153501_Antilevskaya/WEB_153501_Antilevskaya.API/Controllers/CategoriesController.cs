@@ -12,7 +12,7 @@ using WEB_153501_Antilevskaya.Domain.Models;
 
 namespace WEB_153501_Antilevskaya.API.Controllers;
 
-[Route("api/Category")]
+[Route("api/category")]
 [ApiController]
 public class CategoriesController : Controller
 {

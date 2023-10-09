@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using WEB_153501_Antilevskaya.Api;
 using WEB_153501_Antilevskaya.Data;
 using WEB_153501_Antilevskaya.Services.CategoryService;
 using WEB_153501_Antilevskaya.Services.ExhibitService;
@@ -16,8 +18,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
-builder.Services.AddScoped<IExhibitService, MemoryExhibitService>();
+//builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
+//builder.Services.AddScoped<IExhibitService, MemoryExhibitService>();
+
+UriData uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
+builder.Services.AddHttpClient<IExhibitService, ApiExhibitService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
+builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 
 var app = builder.Build();
 

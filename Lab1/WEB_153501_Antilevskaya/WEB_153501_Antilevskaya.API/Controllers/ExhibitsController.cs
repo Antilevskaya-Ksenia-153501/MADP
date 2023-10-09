@@ -9,7 +9,7 @@ using WEB_153501_Antilevskaya.Domain.Entities;
 
 namespace WEB_153501_Antilevskaya.API.Controllers;
 
-[Route("api/Exhibits")]
+[Route("api/exhibits")]
 [ApiController]
 public class ExhibitsController : Controller
 {
@@ -19,10 +19,15 @@ public class ExhibitsController : Controller
     {
         _exhibitService = exhibitService;
     }
-    
-    [HttpGet]
-    public async Task<ActionResult<ResponseData<List<Exhibit>>>> GetExhibits(string? category,int pageNo = 1,int pageSize = 3)
+
+    [HttpGet("{category?}/{pageNo?}")]
+    public async Task<ActionResult<ResponseData<List<Exhibit>>>> GetExhibits(string? category = null ,int pageNo = 1,int pageSize = 3)
     {
+        if (int.TryParse(category, out int parsedPageNo))
+        {
+            pageNo = parsedPageNo;
+            category = null;
+        }
         return Ok(await _exhibitService.GetExhibitListAsync(category, pageNo, pageSize));
     }
 }
