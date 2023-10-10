@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IExhibitService, ExhibitService>();
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 await DbInitializer.SeedData(app);

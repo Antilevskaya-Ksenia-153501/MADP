@@ -1,0 +1,73 @@
+﻿@page 
+@model WEB_153501_Antilevskaya.Areas.Admin.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Exhibit.Items[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exhibit.Items[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exhibit.Items[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exhibit.Items[0].Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Exhibit.Items){
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                <img src="@item.Image" alt="Exhibit picture" height="40%" width="100%">
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" asp-page="/Index" asp-route-currentpage="@ViewData["previousPage"]" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item"><a class="page-link" asp-page="/Index" asp-route-currentpage="1">1</a></li>
+        <li class="page-item"><a class="page-link" asp-page="/Index" asp-route-currentpage="2">2</a></li>
+        <li class="page-item"><a class="page-link" asp-page="/Index" asp-route-currentpage="3">3</a></li>
+        <li class="page-item">
+            <a class="page-link" asp-page="./Index" asp-route-currentpage="@ViewData["nextPage"]" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -24,6 +24,7 @@ builder.Services.AddControllersWithViews();
 UriData uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
 builder.Services.AddHttpClient<IExhibitService, ApiExhibitService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 

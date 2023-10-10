@@ -2,7 +2,6 @@
 using System.Text.Json;
 using WEB_153501_Antilevskaya.Domain.Models;
 using WEB_153501_Antilevskaya.Domain.Entities;
-using System.Security.Cryptography.Xml;
 
 namespace WEB_153501_Antilevskaya.Services.ExhibitService;
 
@@ -60,6 +59,35 @@ public class ApiExhibitService: IExhibitService
         {
             Success = false,
             ErrorMessage = $"Данные не получены от сервера. Error:{ response.StatusCode.ToString() }"
+        };
+    }
+
+    public async Task<ResponseData<Exhibit>> GetExhibitByIdAsync(int id)
+
+    {
+        var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}exhibits/get/{id}");
+        var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
+        if (response.IsSuccessStatusCode)
+        {
+            try
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseData<Exhibit>>(_serializerOptions);
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError($"-----> Ошибка: {ex.Message}");
+                return new ResponseData<Exhibit>
+                {
+                    Success = false,
+                    ErrorMessage = $"Ошибка: {ex.Message}"
+                };
+            }
+        }
+        _logger.LogError($"-----> Данные не получены от сервера. Error: {response.StatusCode.ToString()}");
+        return new ResponseData<Exhibit>
+        {
+            Success = false,
+            ErrorMessage = $"Данные не получены от сервера. Error:{response.StatusCode.ToString()}"
         };
     }
 }

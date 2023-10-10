@@ -30,6 +30,31 @@ public class ExhibitsController : Controller
         }
         return Ok(await _exhibitService.GetExhibitListAsync(category, pageNo, pageSize));
     }
+
+    [HttpGet("get/{id:int}")]
+    public async Task<ActionResult<ResponseData<Exhibit>>> GetExhibitById(int id)
+    {
+        return Ok(await _exhibitService.GetExhibitByIdAsync(id));
+    }
+
+    [HttpGet("delete/{id:int}")]
+    public async Task<ActionResult<ResponseData<Exhibit>>> DeleteExhibitById(int id)
+    {
+        try
+        {
+            await _exhibitService.TaskDeleteExhibitAsync(id);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new ResponseData<Exhibit>()
+            {
+                Data = null,
+                Success = false,
+                ErrorMessage = ex.Message
+            });
+        }
+        return NoContent();
+    }
 }
 
 
