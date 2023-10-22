@@ -2,61 +2,61 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WEB_153501_Antilevskaya.Data;
 using WEB_153501_Antilevskaya.Domain.Entities;
+using WEB_153501_Antilevskaya.Services.ExhibitService;
 
 namespace WEB_153501_Antilevskaya.Areas.Admin.Pages
 {
     public class DeleteModel : PageModel
     {
-        private readonly WEB_153501_Antilevskaya.Data.ApplicationDbContext _context;
+        private readonly IExhibitService _exhibitService;
 
-        public DeleteModel(WEB_153501_Antilevskaya.Data.ApplicationDbContext context)
+        public DeleteModel(IExhibitService exhibitService)
         {
-            _context = context;
+            _exhibitService = exhibitService;
         }
 
         [BindProperty]
-      public Exhibit Exhibit { get; set; } = default!;
+        public Exhibit Exhibit { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Exhibit == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var exhibit = await _context.Exhibit.FirstOrDefaultAsync(m => m.Id == id);
+            var exhibit = await _exhibitService.GetExhibitByIdAsync(id.Value);
 
-            if (exhibit == null)
+            if (!exhibit.Success)
             {
                 return NotFound();
             }
             else 
             {
-                Exhibit = exhibit;
+                Exhibit = exhibit.Data;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (id == null || _context.Exhibit == null)
+            if (id == null)
             {
                 return NotFound();
             }
-            var exhibit = await _context.Exhibit.FindAsync(id);
-
-            if (exhibit != null)
+            try
             {
-                Exhibit = exhibit;
-                _context.Exhibit.Remove(Exhibit);
-                await _context.SaveChangesAsync();
+                await _exhibitService.DeleteExhibitAsync(id.Value);
             }
-
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
             return RedirectToPage("./Index");
         }
     }

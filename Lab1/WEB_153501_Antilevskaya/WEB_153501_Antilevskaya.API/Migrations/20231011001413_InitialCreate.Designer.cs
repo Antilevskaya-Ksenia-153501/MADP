@@ -11,7 +11,7 @@ using WEB_153501_Antilevskaya.API.Data;
 namespace WEB_153501_Antilevskaya.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230929120051_InitialCreate")]
+    [Migration("20231011001413_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,7 +53,6 @@ namespace WEB_153501_Antilevskaya.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Price")

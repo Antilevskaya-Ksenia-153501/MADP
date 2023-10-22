@@ -2,6 +2,10 @@
 using System.Text.Json;
 using WEB_153501_Antilevskaya.Domain.Models;
 using WEB_153501_Antilevskaya.Domain.Entities;
+using System.Net.Http.Headers;
+using Azure.Core;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace WEB_153501_Antilevskaya.Services.ExhibitService;
 
@@ -90,4 +94,71 @@ public class ApiExhibitService: IExhibitService
             ErrorMessage = $"Данные не получены от сервера. Error:{response.StatusCode.ToString()}"
         };
     }
+    public async Task DeleteExhibitAsync(int id)
+    {
+        var uriString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}exhibits/delete/{id}");
+
+        var response = await _httpClient.DeleteAsync(new Uri(uriString.ToString()));
+
+        if (!response.IsSuccessStatusCode)
+        {
+            _logger.LogError($"-----> Данные не получены от сервера. Error:{response.StatusCode}");
+        }
+    }
+
+    public async Task UpdateExhibitAsync(int id, Exhibit exhibit, IFormFile? formFile)
+    {
+        var urlString = new StringBuilder($"{_httpClient.BaseAddress!.AbsoluteUri}exhibits/update/{id}");
+        var response = await _httpClient.PutAsync(new Uri(urlString.ToString()),
+            new StringContent(JsonSerializer.Serialize(exhibit), Encoding.UTF8, "application/json"));
+
+        if (response.IsSuccessStatusCode)
+        {
+            if (formFile is not null)
+            {
+                //int exhibitId = (await response.Content.ReadFromJsonAsync<ResponseData<Exhibit>>(_serializerOptions)).Data.Id;
+                await SaveImageAsync(id, formFile);
+            }
+        }
+        else
+        {
+            _logger.LogError($"-----> Данные не получены от сервера. Error:{response.StatusCode}");
+        }
+    }
+
+    public async Task<ResponseData<Exhibit>> CreateExhibitAsync(Exhibit exhibit, IFormFile? formFile)
+    {
+        var uri = new Uri($"{_httpClient.BaseAddress!.AbsoluteUri}exhibits/create");
+        var response = await _httpClient.PostAsJsonAsync(uri, exhibit, _serializerOptions);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var data = await response.Content.ReadFromJsonAsync<ResponseData<Exhibit>>(_serializerOptions);
+            if (formFile is not null)
+            {
+                await SaveImageAsync(data.Data.Id, formFile);
+            }
+            return data;
+        }
+        _logger.LogError($"-----> Объект не добавлен. Error:{response.StatusCode}");
+        return new ResponseData<Exhibit>
+        {
+            Success = false,
+            ErrorMessage = $"Объект не добавлен. Error:{response.StatusCode}"
+        };
+    }
+    private async Task SaveImageAsync(int id, IFormFile image)
+    {
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}exhibits/image/{id}")
+        };
+        var content = new MultipartFormDataContent();
+        var streamContent = new StreamContent(image.OpenReadStream());
+        content.Add(streamContent, "formFile", image.FileName);
+        request.Content = content;
+        await _httpClient.SendAsync(request);
+    }
+
 }

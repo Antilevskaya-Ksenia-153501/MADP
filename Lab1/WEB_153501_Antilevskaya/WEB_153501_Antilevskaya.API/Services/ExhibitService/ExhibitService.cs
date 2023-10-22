@@ -92,12 +92,12 @@ public class ExhibitService : IExhibitService
     }
     public async Task TaskDeleteExhibitAsync(int id)
     {
-        var exhibit = _context.Exhibit.FindAsync(id);
+        var exhibit = await _context.Exhibit.FindAsync(id);
         if (exhibit == null)
         {
             throw new ArgumentException("There is no such exhibit");
         }
-        _context.Remove(exhibit);
+        _context.Exhibit.Remove(exhibit);
         await _context.SaveChangesAsync();
     }
     public async Task<ResponseData<Exhibit>> CreateExhibitAsync(Exhibit exhibit)
@@ -107,7 +107,7 @@ public class ExhibitService : IExhibitService
         {
             await _context.SaveChangesAsync();
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (Exception ex)
         {
             return new ResponseData<Exhibit>
             {
@@ -139,6 +139,11 @@ public class ExhibitService : IExhibitService
             if (!String.IsNullOrEmpty(exhibit.Image))
             {
                 var prevImage = Path.GetFileName(exhibit.Image);
+                var prevImagePath = Path.Combine(imageFolder, prevImage);
+                if (File.Exists(prevImagePath))
+                {
+                    File.Delete(prevImagePath);
+                }
             }
             var ext = Path.GetExtension(formFile.FileName);
             var fName = Path.ChangeExtension(Path.GetRandomFileName(), ext);
@@ -147,10 +152,8 @@ public class ExhibitService : IExhibitService
             {
                 await formFile.CopyToAsync(stream);
             }
-
-            _context.Entry(exhibit).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
             exhibit.Image = $"{host}/Images/{fName}";
+            _context.Entry(exhibit).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
         responseData.Data = exhibit.Image;

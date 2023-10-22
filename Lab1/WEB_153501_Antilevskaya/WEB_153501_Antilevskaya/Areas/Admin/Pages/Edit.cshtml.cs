@@ -1,42 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WEB_153501_Antilevskaya.Data;
 using WEB_153501_Antilevskaya.Domain.Entities;
+using WEB_153501_Antilevskaya.Services.ExhibitService;
+using WEB_153501_Antilevskaya.Services.CategoryService;
 
 namespace WEB_153501_Antilevskaya.Areas.Admin.Pages
 {
     public class EditModel : PageModel
     {
-        private readonly WEB_153501_Antilevskaya.Data.ApplicationDbContext _context;
+        private readonly IExhibitService _exhibitService;
+        private readonly ICategoryService _categoryService;
 
-        public EditModel(WEB_153501_Antilevskaya.Data.ApplicationDbContext context)
+        public EditModel(IExhibitService exhibitService, ICategoryService categoryService)
         {
-            _context = context;
+            _exhibitService = exhibitService;
+            _categoryService = categoryService;
         }
 
         [BindProperty]
         public Exhibit Exhibit { get; set; } = default!;
 
+        [BindProperty]
+        public IFormFile? Image { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Exhibit == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var exhibit =  await _context.Exhibit.FirstOrDefaultAsync(m => m.Id == id);
-            if (exhibit == null)
+            var response = await _exhibitService.GetExhibitByIdAsync(id.Value);
+
+            if (!response.Success)
             {
                 return NotFound();
             }
-            Exhibit = exhibit;
-           ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
+
+            var responseCategories = await _categoryService.GetCategoryListAsync();
+            if (!response.Success)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryId"] = new SelectList(responseCategories.Data, "Id", "Name");
+
+            Exhibit = response.Data!;
+
             return Page();
         }
 
@@ -48,16 +59,13 @@ namespace WEB_153501_Antilevskaya.Areas.Admin.Pages
             {
                 return Page();
             }
-
-            _context.Attach(Exhibit).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _exhibitService.UpdateExhibitAsync(Exhibit.Id, Exhibit, Image);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!ExhibitExists(Exhibit.Id))
+                if (!await ExhibitExists(Exhibit.Id))
                 {
                     return NotFound();
                 }
@@ -66,13 +74,13 @@ namespace WEB_153501_Antilevskaya.Areas.Admin.Pages
                     throw;
                 }
             }
-
             return RedirectToPage("./Index");
         }
 
-        private bool ExhibitExists(int id)
+        private async Task<bool> ExhibitExists(int id)
         {
-          return (_context.Exhibit?.Any(e => e.Id == id)).GetValueOrDefault();
+            var response = await _exhibitService.GetExhibitByIdAsync(id);
+            return response.Success;
         }
     }
 }

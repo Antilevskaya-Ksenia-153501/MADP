@@ -16,16 +16,15 @@ namespace WEB_153501_Antilevskaya.Areas.Admin.Pages
             _exhibitService = exhibitService;
         }
 
-      public Exhibit Exhibit { get; set; } = default!; 
+        public Exhibit Exhibit { get; set; } = default!; 
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            var exhibit = _exhibitService.GetExhibitByIdAsync(id).Result.Data;
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var exhibit = _exhibitService.GetExhibitByIdAsync(id.Value).Result.Data;
             if (exhibit == null)
             {
                 return NotFound();

@@ -50,7 +50,6 @@ namespace WEB_153501_Antilevskaya.API.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Price")
