@@ -32,77 +32,13 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                         }
                     }
                 }
-                var alice = userMgr.FindByNameAsync("alice").Result;
-                if (alice == null)
-                {
-                    alice = new ApplicationUser
-                    {
-                        UserName = "alice",
-                        Email = "AliceSmith@email.com",
-                        EmailConfirmed = true,
-                    };
-                    var result = userMgr.CreateAsync(alice, "Pass123$").Result;
-                    if (!result.Succeeded)
-                    {
-                        throw new Exception(result.Errors.First().Description);
-                    }
-
-                    result = userMgr.AddClaimsAsync(alice, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Alice Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Alice"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                        }).Result;
-                    if (!result.Succeeded)
-                    {
-                        throw new Exception(result.Errors.First().Description);
-                    }
-                    Log.Debug("alice created");
-                }
-                else
-                {
-                    Log.Debug("alice already exists");
-                }
-
-                var bob = userMgr.FindByNameAsync("bob").Result;
-                if (bob == null)
-                {
-                    bob = new ApplicationUser
-                    {
-                        UserName = "bob",
-                        Email = "BobSmith@email.com",
-                        EmailConfirmed = true
-                    };
-                    var result = userMgr.CreateAsync(bob, "Pass123$").Result;
-                    if (!result.Succeeded)
-                    {
-                        throw new Exception(result.Errors.First().Description);
-                    }
-
-                    result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim("location", "somewhere")
-                        }).Result;
-                    if (!result.Succeeded)
-                    {
-                        throw new Exception(result.Errors.First().Description);
-                    }
-                    Log.Debug("bob created");
-                }
-                else
-                {
-                    Log.Debug("bob already exists");
-                }
-
-                var user = userMgr.FindByNameAsync("user").Result;
+         
+                var user = userMgr.FindByNameAsync("user@gmail.com").Result;
                 if (user == null)
                 {
                     user = new ApplicationUser
                     {
-                        UserName = "user",
+                        UserName = "user@gmail.com",
                         Email = "user@gmail.com",
                         EmailConfirmed = true
                     };
@@ -118,11 +54,11 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+                    result = userMgr.AddClaimsAsync(user, new Claim[]{
+                            new Claim(JwtClaimTypes.Name, "Fake User"),
+                            new Claim(JwtClaimTypes.GivenName, "User"),
+                            new Claim(JwtClaimTypes.FamilyName, "No"),
+                            new Claim(JwtClaimTypes.WebSite, "http://user.com"),
                             new Claim("location", "somewhere")
                         }).Result;
                     if (!result.Succeeded)
@@ -136,12 +72,12 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     Log.Debug("user already exists");
                 }
 
-                var admin = userMgr.FindByNameAsync("admin").Result;
-                if (user == null)
+                var admin = userMgr.FindByNameAsync("admin@gmail.com").Result;
+                if (admin == null)
                 {
-                    user = new ApplicationUser
+                    admin = new ApplicationUser
                     {
-                        UserName = "admin",
+                        UserName = "admin@gmail.com",
                         Email = "admin@gmail.com",
                         EmailConfirmed = true
                     };
@@ -156,14 +92,15 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
-
-                    result = userMgr.AddClaimsAsync(bob, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                            new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim("location", "somewhere")
-                        }).Result;
+                    var claims = new List<Claim>
+                    {
+                        new Claim(JwtClaimTypes.Name, "Fake Admin"),
+                        new Claim(JwtClaimTypes.GivenName, "Admin"),
+                        new Claim(JwtClaimTypes.FamilyName, "No"),
+                        new Claim(JwtClaimTypes.WebSite, "http://admin.com"),
+                        new Claim("location", "somewhere")
+                    };
+                    result = userMgr.AddClaimsAsync(admin, claims).Result;
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
@@ -175,7 +112,6 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     Log.Debug("admin already exists");
                 }
             }
-
         }
     }
 }
