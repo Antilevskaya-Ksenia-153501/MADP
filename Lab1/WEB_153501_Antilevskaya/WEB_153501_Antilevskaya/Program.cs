@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using WEB_153501_Antilevskaya.Api;
@@ -14,8 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpContextAccessor();
@@ -32,7 +33,7 @@ builder.Services.AddAuthentication(opt =>
     options.ClientId = builder.Configuration["InteractiveServiceSettings:ClientId"];
     options.ClientSecret = builder.Configuration["InteractiveServiceSettings:ClientSecret"];
 
- // Получить Claims пользователя
+    // Получить Claims пользователя
     options.GetClaimsFromUserInfoEndpoint = true;
     options.ResponseType = "code";
     options.ResponseMode = "query";
