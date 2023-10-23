@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WEB_153501_Antilevskaya.IdentityServer.Models;
 
@@ -23,17 +24,20 @@ namespace WEB_153501_Antilevskaya.IdentityServer.Pages.Register
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IWebHostEnvironment _environment;
         //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<RegisterModel> logger
+            ILogger<RegisterModel> logger,
+            IWebHostEnvironment environment
             /*IEmailSender emailSender*/)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _environment = environment;
             //_emailSender = emailSender;
         }
 
@@ -61,12 +65,22 @@ namespace WEB_153501_Antilevskaya.IdentityServer.Pages.Register
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            public IFormFile Image { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+        }
+
+        private async Task SaveImageAsync(string id)
+        {
+            var ext = Path.GetExtension(Input.Image.FileName);
+            var fileName = Path.ChangeExtension(id, ext);
+            var path = Path.Combine(_environment.ContentRootPath, "Images", fileName);
+            using var stream = System.IO.File.OpenWrite(path);
+            await Input.Image.CopyToAsync(stream);
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -88,6 +102,15 @@ namespace WEB_153501_Antilevskaya.IdentityServer.Pages.Register
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
+
+                    if (Input.Image != null)
+                    {
+                        await SaveImageAsync(user.Id);
+                    }
+                    else
+                    {
+                        
+                    }
 
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
