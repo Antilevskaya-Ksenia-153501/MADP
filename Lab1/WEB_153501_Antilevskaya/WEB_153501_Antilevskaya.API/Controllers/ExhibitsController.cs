@@ -6,6 +6,7 @@ using WEB_153501_Antilevskaya.API.Data;
 using WEB_153501_Antilevskaya.API.Services.ExhibitService;
 using WEB_153501_Antilevskaya.Domain.Models;
 using WEB_153501_Antilevskaya.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WEB_153501_Antilevskaya.API.Controllers;
 
@@ -37,6 +38,7 @@ public class ExhibitsController : Controller
         return Ok(await _exhibitService.GetExhibitByIdAsync(id));
     }
 
+    [Authorize]
     [HttpDelete("delete/{id:int}")]
     public async Task<ActionResult<ResponseData<Exhibit>>> DeleteExhibitById(int id)
     {
@@ -56,6 +58,7 @@ public class ExhibitsController : Controller
         return NoContent();
     }
 
+    [Authorize]
     [HttpPut("update/{id:int}")]
     public async Task<ActionResult<ResponseData<Exhibit>>> UpdateExhibit(int id, Exhibit newExhibit)
     {
@@ -78,6 +81,7 @@ public class ExhibitsController : Controller
         });
     }
 
+    [Authorize]
     [HttpPost("create/")]
     public async Task<ActionResult<ResponseData<Exhibit>>> CreateExhibit(Exhibit exhibit)
     {
@@ -102,6 +106,7 @@ public class ExhibitsController : Controller
         });
     }
 
+    [Authorize]
     [HttpPost("image/{id:int}")]
     public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
     {

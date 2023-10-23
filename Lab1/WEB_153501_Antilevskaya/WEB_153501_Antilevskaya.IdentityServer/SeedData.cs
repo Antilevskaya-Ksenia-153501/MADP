@@ -58,8 +58,6 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                             new Claim(JwtClaimTypes.Name, "Fake User"),
                             new Claim(JwtClaimTypes.GivenName, "User"),
                             new Claim(JwtClaimTypes.FamilyName, "No"),
-                            new Claim(JwtClaimTypes.WebSite, "http://user.com"),
-                            new Claim("location", "somewhere")
                         }).Result;
                     if (!result.Succeeded)
                     {
@@ -97,8 +95,6 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                         new Claim(JwtClaimTypes.Name, "Fake Admin"),
                         new Claim(JwtClaimTypes.GivenName, "Admin"),
                         new Claim(JwtClaimTypes.FamilyName, "No"),
-                        new Claim(JwtClaimTypes.WebSite, "http://admin.com"),
-                        new Claim("location", "somewhere")
                     };
                     result = userMgr.AddClaimsAsync(admin, claims).Result;
                     if (!result.Succeeded)
