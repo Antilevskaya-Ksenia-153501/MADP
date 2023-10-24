@@ -54,6 +54,7 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     options.ClientId = "copy client ID from Google here";
                     options.ClientSecret = "copy client secret from Google here";
                 });
+            builder.Services.AddControllers();
 
             return builder.Build();
         }
@@ -74,6 +75,8 @@ namespace WEB_153501_Antilevskaya.IdentityServer
 
             app.MapRazorPages()
                 .RequireAuthorization();
+
+            app.MapControllers();
 
             return app;
         }
