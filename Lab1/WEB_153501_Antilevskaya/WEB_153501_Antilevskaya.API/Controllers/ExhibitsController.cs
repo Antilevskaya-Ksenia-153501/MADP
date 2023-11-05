@@ -38,7 +38,7 @@ public class ExhibitsController : Controller
         return Ok(await _exhibitService.GetExhibitByIdAsync(id));
     }
 
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpDelete("delete/{id:int}")]
     public async Task<ActionResult<ResponseData<Exhibit>>> DeleteExhibitById(int id)
     {
@@ -58,7 +58,7 @@ public class ExhibitsController : Controller
         return NoContent();
     }
 
-    [Authorize]
+    [Authorize(Roles ="admin")]
     [HttpPut("update/{id:int}")]
     public async Task<ActionResult<ResponseData<Exhibit>>> UpdateExhibit(int id, Exhibit newExhibit)
     {
@@ -81,7 +81,7 @@ public class ExhibitsController : Controller
         });
     }
 
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpPost("create/")]
     public async Task<ActionResult<ResponseData<Exhibit>>> CreateExhibit(Exhibit exhibit)
     {
@@ -106,7 +106,7 @@ public class ExhibitsController : Controller
         });
     }
 
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpPost("image/{id:int}")]
     public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
     {

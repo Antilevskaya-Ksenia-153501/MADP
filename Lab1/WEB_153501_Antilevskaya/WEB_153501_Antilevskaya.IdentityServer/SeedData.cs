@@ -10,7 +10,7 @@ namespace WEB_153501_Antilevskaya.IdentityServer
 {
     public class SeedData
     {
-        public static void EnsureSeedData(WebApplication app)
+        public static async Task EnsureSeedData(WebApplication app)
         {
             using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -22,10 +22,10 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                 var roles = new[] { "user", "admin" };
                 foreach (var role in roles)
                 {
-                    if (!roleMgr.RoleExistsAsync(role).Result)
+                    if (!await roleMgr.RoleExistsAsync(role))
                     {
                         var newRole = new IdentityRole(role);
-                        var result = roleMgr.CreateAsync(newRole).Result;
+                        var result = await roleMgr.CreateAsync(newRole);
                         if (!result.Succeeded)
                         {
                             throw new Exception(result.Errors.First().Description);
@@ -33,7 +33,7 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     }
                 }
          
-                var user = userMgr.FindByNameAsync("user@gmail.com").Result;
+                var user = await userMgr.FindByNameAsync("user@gmail.com");
                 if (user == null)
                 {
                     user = new ApplicationUser
@@ -42,23 +42,19 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                         Email = "user@gmail.com",
                         EmailConfirmed = true
                     };
-                    var result = userMgr.CreateAsync(user, "Pass123$").Result;
+                    var result = await userMgr.CreateAsync(user, "Pass123$");
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    result = userMgr.AddToRoleAsync(user, "user").Result;
+                    result =await userMgr.AddToRoleAsync(user, "user");
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    result = userMgr.AddClaimsAsync(user, new Claim[]{
-                            new Claim(JwtClaimTypes.Name, "Fake User"),
-                            new Claim(JwtClaimTypes.GivenName, "User"),
-                            new Claim(JwtClaimTypes.FamilyName, "No"),
-                        }).Result;
+                    result = await userMgr.AddClaimsAsync(user, new Claim[] { new Claim(JwtClaimTypes.Name, "Fake User"), new Claim(JwtClaimTypes.GivenName, "User"), new Claim(JwtClaimTypes.FamilyName, "No") });
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
@@ -70,7 +66,7 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     Log.Debug("user already exists");
                 }
 
-                var admin = userMgr.FindByNameAsync("admin@gmail.com").Result;
+                var admin = await userMgr.FindByNameAsync("admin@gmail.com");
                 if (admin == null)
                 {
                     admin = new ApplicationUser
@@ -79,13 +75,13 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                         Email = "admin@gmail.com",
                         EmailConfirmed = true
                     };
-                    var result = userMgr.CreateAsync(admin, "Pass123$").Result;
+                    var result = await userMgr.CreateAsync(admin, "Pass123$");
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
                     }
 
-                    result = userMgr.AddToRoleAsync(admin, "admin").Result;
+                    result = await userMgr.AddToRoleAsync(admin, "admin");
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);
@@ -96,7 +92,7 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                         new Claim(JwtClaimTypes.GivenName, "Admin"),
                         new Claim(JwtClaimTypes.FamilyName, "No"),
                     };
-                    result = userMgr.AddClaimsAsync(admin, claims).Result;
+                    result = await userMgr.AddClaimsAsync(admin, claims);
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);

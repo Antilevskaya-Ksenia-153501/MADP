@@ -62,7 +62,7 @@
     }
 </div>
 
-<nav aria-label="Page navigation example">
+@*<nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link" asp-controller="Exhibit" asp-route-category="@ViewData["currentCategory"]" asp-route-page="@ViewBag.previousPage" aria-label="Previous">
@@ -77,6 +77,11 @@
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
-
     </ul>
-</nav>
+</nav>*@
+
+
+<pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       category="@category"
+       current-category="@ViewData["currentCategory"]"></pager>
