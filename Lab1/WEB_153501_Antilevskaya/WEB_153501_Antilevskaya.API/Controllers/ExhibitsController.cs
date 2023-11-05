@@ -12,6 +12,7 @@ namespace WEB_153501_Antilevskaya.API.Controllers;
 
 [Route("api/exhibits")]
 [ApiController]
+
 public class ExhibitsController : Controller
 {
     private readonly IExhibitService _exhibitService;
@@ -33,13 +34,14 @@ public class ExhibitsController : Controller
     }
 
     [HttpGet("get/{id:int}")]
+    [Authorize]
     public async Task<ActionResult<ResponseData<Exhibit>>> GetExhibitById(int id)
     {
         return Ok(await _exhibitService.GetExhibitByIdAsync(id));
     }
 
-    [Authorize(Roles = "admin")]
     [HttpDelete("delete/{id:int}")]
+    [Authorize]
     public async Task<ActionResult<ResponseData<Exhibit>>> DeleteExhibitById(int id)
     {
         try
@@ -58,8 +60,8 @@ public class ExhibitsController : Controller
         return NoContent();
     }
 
-    [Authorize(Roles ="admin")]
     [HttpPut("update/{id:int}")]
+    [Authorize]
     public async Task<ActionResult<ResponseData<Exhibit>>> UpdateExhibit(int id, Exhibit newExhibit)
     {
         try
@@ -81,8 +83,8 @@ public class ExhibitsController : Controller
         });
     }
 
-    [Authorize(Roles = "admin")]
     [HttpPost("create/")]
+    [Authorize]
     public async Task<ActionResult<ResponseData<Exhibit>>> CreateExhibit(Exhibit exhibit)
     {
         if (exhibit is null)
@@ -106,8 +108,9 @@ public class ExhibitsController : Controller
         });
     }
 
-    [Authorize(Roles = "admin")]
+
     [HttpPost("image/{id:int}")]
+    [Authorize]
     public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
     {
         var response = await _exhibitService.SaveImageAsync(id, formFile);

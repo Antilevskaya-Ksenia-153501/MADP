@@ -19,7 +19,7 @@ public class Pager:TagHelper
 
         if (Admin)
         {
-            routeValues = new RouteValueDictionary() { {"page", page}, };
+            routeValues = new RouteValueDictionary() { {"currentpage", page}, };
         }
         else
         {

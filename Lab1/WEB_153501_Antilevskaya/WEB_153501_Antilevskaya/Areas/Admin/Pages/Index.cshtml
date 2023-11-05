@@ -54,7 +54,7 @@
     </tbody>
 </table>
 
-<nav aria-label="Page navigation example">
+@*<nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link" asp-page="/Index" asp-route-currentpage="@ViewData["previousPage"]" aria-label="Previous">
@@ -71,3 +71,8 @@
         </li>
     </ul>
 </nav>
+*@
+
+<pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       admin="true"></pager>

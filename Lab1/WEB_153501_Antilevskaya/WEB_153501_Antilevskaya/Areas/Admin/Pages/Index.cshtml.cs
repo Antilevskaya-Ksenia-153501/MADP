@@ -11,7 +11,8 @@ public class IndexModel : PageModel
     public ListModel<Exhibit> Exhibit { get; set; }
 
     [BindProperty(SupportsGet = true)]
-    public int CurrentPage { get; set; } = 1;
+    public int CurrentPage { get; set; }
+    public int TotalPages { get; set; }
 
     public IndexModel(IExhibitService exhibitService)
     {
@@ -20,7 +21,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync(string? category)
     {
         Exhibit = _exhibitService.GetExhibitListAsync(category, CurrentPage).Result.Data;
-        ViewData["previousPage"] = CurrentPage == 1 ? 1 : CurrentPage - 1;
-        ViewData["nextPage"] = CurrentPage == Exhibit.TotalPages ? Exhibit.TotalPages : CurrentPage + 1;
+        //ViewData["previousPage"] = CurrentPage == 1 ? 1 : CurrentPage - 1;
+        //ViewData["nextPage"] = CurrentPage == Exhibit.TotalPages ? Exhibit.TotalPages : CurrentPage + 1;
     }
 }
