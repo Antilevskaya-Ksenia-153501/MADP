@@ -11,7 +11,19 @@
     <a asp-page="Create">Create New</a>
 </p>
 
-<table class="table">
+
+@{
+    await Html.RenderPartialAsync("_ExhibitListPartial", new
+    {
+        CurrentPage = Model.CurrentPage,
+        TotalPages = Model.TotalPages,
+        Exhibits = Model.Exhibit,
+        ReturnUrl = Request.Path + Request.QueryString.ToUriComponent(),
+        IsAdmin = true
+    });
+}
+
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -54,6 +66,10 @@
     </tbody>
 </table>
 
+<pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       admin="true"></pager>*@
+
 @*<nav aria-label="Page navigation example">
     <ul class="pagination">
         <li class="page-item">
@@ -72,7 +88,3 @@
     </ul>
 </nav>
 *@
-
-<pager current-page="@Model.CurrentPage"
-       total-pages="@Model.TotalPages"
-       admin="true"></pager>

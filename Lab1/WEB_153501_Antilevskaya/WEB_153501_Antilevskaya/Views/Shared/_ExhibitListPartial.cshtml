@@ -1,0 +1,49 @@
+﻿<div id="exhibit-list">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var item in Model.Exhibits)
+        {
+            <div class="col">
+                <div class="card h-100 border-dark mb-3">
+                    <img src="@item.Image" class="card-img-top" height="40%" width="100%" alt="Exhibit picture">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Description</p>
+                        @if (!Model.IsAdmin)
+                        {
+                            <div class="card-footer text-muted">
+                                <form method="get" action="/Cart/Add">
+                                    <input type="hidden" name="exhibitId" value="@item.Id" />
+                                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> 
+                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> 
+                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.IsAdmin)
+    {
+        <pager current-page="@Model.CurrentPage"
+           total-pages="@Model.TotalPages"
+           admin="true"></pager> 
+    }
+    else
+    {
+        <pager current-page="@Model.CurrentPage"
+           total-pages="@Model.TotalPages"
+           category="@Model.CurrentCategory"
+           current-category="@ViewData["currentCategory"]"></pager>
+    }
+
+</div>
+
+<script src="~/js/site.js"></script>

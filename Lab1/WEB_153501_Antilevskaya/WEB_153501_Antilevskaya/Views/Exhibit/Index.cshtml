@@ -1,11 +1,14 @@
-﻿@*@model IEnumerable<WEB_153501_Antilevskaya.Domain.Entities.Exhibit>*@
-@model WEB_153501_Antilevskaya.Domain.Models.ListModel<WEB_153501_Antilevskaya.Domain.Entities.Exhibit>
+﻿@model List<Exhibit>
+@*@model IEnumerable<WEB_153501_Antilevskaya.Domain.Entities.Exhibit>*@
+@*@model WEB_153501_Antilevskaya.Domain.Models.ListModel<WEB_153501_Antilevskaya.Domain.Entities.Exhibit>*@
 
 @{
     ViewData["Title"] = "Index";
     var request = ViewContext.HttpContext.Request;
     var returnUrl = request.Path + request.QueryString.ToUriComponent();
     string? category = request.RouteValues["category"]?.ToString();
+    int currentPage = ViewData["currentPage"] as int? ?? 1;
+    int totalPages = ViewData["totalPages"] as int? ?? 1;
 }
 
 <h1>Exhibits</h1>
@@ -29,9 +32,7 @@
                 @foreach (var item in ViewBag.Categories)
                 {
                     <li>
-                        <a class="dropdown-item"
-                       asp-controller="Exhibit"
-                       asp-route-category="@item.NormalizedName">
+                        <a class="dropdown-item" asp-controller="Exhibit" asp-route-category="@item.NormalizedName">
                             @item.Name
                         </a>
                     </li>
@@ -41,26 +42,18 @@
     </ul>
 </div>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model.Items) {
-        <div class="col">
-            <div class="card h-100 border-dark mb-3">
-                <img src="@item.Image" class="card-img-top" height="40%" width="100%" alt="Exhibit picture">
-                <div class="card-body">
-                    <h5 class="card-title"> @Html.DisplayFor(modelItem => @item.Title)</h5>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                    <div class="card-footer text-muted">
-                        <form method="get" action="/Cart/Add">
-                            <input type="hidden" name="exhibitId" value="@item.Id" />
-                            <input type="hidden" name="returnUrl" value="@returnUrl" />
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                        </form>
-                    </div>   
-                </div>
-            </div>
-        </div>
-    }
-</div>
+@{
+    await Html.RenderPartialAsync("_ExhibitListPartial", new
+    {
+        Exhibits = Model,
+        Category = category,
+        CurrentCategory = ViewData["currentCategory"],
+        CurrentPage = currentPage,
+        TotalPages = totalPages,
+        ReturnUrl = returnUrl,
+        IsAdmin = false
+    });
+}
 
 @*<nav aria-label="Page navigation example">
     <ul class="pagination">
@@ -79,9 +72,3 @@
         </li>
     </ul>
 </nav>*@
-
-
-<pager current-page="@Model.CurrentPage"
-       total-pages="@Model.TotalPages"
-       category="@category"
-       current-category="@ViewData["currentCategory"]"></pager>
