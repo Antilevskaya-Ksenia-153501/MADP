@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using WEB_153501_Antilevskaya.Api;
 using WEB_153501_Antilevskaya.Data;
+using WEB_153501_Antilevskaya.Services.CartService;
 using WEB_153501_Antilevskaya.Services.CategoryService;
 using WEB_153501_Antilevskaya.Services.ExhibitService;
+using WEB_153501_Antilevskaya.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +49,7 @@ builder.Services.AddAuthentication(opt =>
 UriData uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
 builder.Services.AddHttpClient<IExhibitService, ApiExhibitService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
+builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 builder.Services.AddRazorPages();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();

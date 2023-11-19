@@ -1,0 +1,42 @@
+﻿@using WEB_153501_Antilevskaya.Domain.Models
+@model Cart
+
+@{
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+
+}
+<h2>Your cart: </h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var carItem in Model.CartItems.Values)
+        {
+            <tr>
+                <td><img src="@carItem.Exhibit.Image" class="card-img-top" height="40%" width="40%" alt="Exhibit picture"></td>
+                <td>@carItem.Exhibit.Title</td>
+                <td>@carItem.Exhibit.Price$</td>
+                <td>@carItem.Amount</td>
+                <td></td>
+                <td>
+                    <form asp-controller="Cart" asp-action="Remove" asp-route-id="@carItem.Exhibit.Id" asp-route-returnUrl="@returnUrl" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br>
+
+<p>Total amount: @Model.Count</p>
+<p>Total price: @Model.TotalPrice</p>
+

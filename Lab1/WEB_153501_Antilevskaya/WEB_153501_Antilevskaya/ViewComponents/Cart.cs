@@ -1,13 +1,16 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WEB_153501_Antilevskaya.ViewComponents
+namespace WEB_153501_Antilevskaya.ViewComponents;
+public class Cart:ViewComponent
 {
-    public class Cart:ViewComponent
+    private readonly WEB_153501_Antilevskaya.Domain.Models.Cart _cart;
+    public Cart(WEB_153501_Antilevskaya.Domain.Models.Cart cart)
     {
-        public string Invoke()
-        {
-            return "00,0 руб (0)";
-        }
+        _cart = cart;   
+    }
+    public string Invoke()
+    {
+        return _cart.TotalPrice.ToString() + "$(" + _cart.Count.ToString() + ")";
     }
 }
