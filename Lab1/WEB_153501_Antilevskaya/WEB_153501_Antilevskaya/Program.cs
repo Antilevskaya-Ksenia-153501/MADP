@@ -48,6 +48,8 @@ UriData uriData = builder.Configuration.GetSection("UriData").Get<UriData>();
 builder.Services.AddHttpClient<IExhibitService, ApiExhibitService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt => opt.BaseAddress = new Uri(uriData.ApiUri));
 builder.Services.AddRazorPages();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -67,6 +69,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
