@@ -9,6 +9,7 @@ using WEB_153501_Antilevskaya.Services.CategoryService;
 using WEB_153501_Antilevskaya.Services.ExhibitService;
 
 namespace WEB_153501_Antilevskaya.Controllers;
+
 public class Exhibit : Controller
 {
     private readonly ICategoryService categoryService;

@@ -71,9 +71,20 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "catalog",
+        pattern: "Catalog/{action=Index}/{id?}",
+        defaults: new { controller = "Exhibit" }
+    );
+
+    endpoints.MapControllerRoute(
+         name: "default",
+         pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+});
 
 app.MapRazorPages().RequireAuthorization();
 
