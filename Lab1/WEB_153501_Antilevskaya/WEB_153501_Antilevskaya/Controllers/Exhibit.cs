@@ -10,26 +10,32 @@ using WEB_153501_Antilevskaya.Services.ExhibitService;
 
 namespace WEB_153501_Antilevskaya.Controllers;
 
-public class Exhibit : Controller
+public class ExhibitController : Controller
 {
     private readonly ICategoryService categoryService;
     private readonly IExhibitService exhibitService;
-    private readonly IConfiguration configuration;
 
-    public Exhibit(ICategoryService categoryService, IExhibitService exhibitService, IConfiguration configuration)
+    public ExhibitController(ICategoryService categoryService, IExhibitService exhibitService)
     {
         this.categoryService = categoryService;
         this.exhibitService = exhibitService;
-        this.configuration = configuration;
     }
 
     public async Task<IActionResult> Index(string? category, int page = 1)
     {
+        if (category == "All")
+            category = null;
         var exhibitResponse = await exhibitService.GetExhibitListAsync(category, page);
         if (!exhibitResponse.Success)
             return NotFound(exhibitResponse.ErrorMessage);
-        ViewBag.Categories = categoryService.GetCategoryListAsync().Result.Data;
-        ViewData["currentCategory"] = category;
+        var categoriesResponse = await categoryService.GetCategoryListAsync();
+        if (!categoriesResponse.Success)
+            return NotFound(categoriesResponse.ErrorMessage);
+        ViewBag.Categories = categoriesResponse.Data;
+        if (category != null)
+            ViewData["currentCategory"] = category;
+        else
+            ViewData["currentCategory"] = "All";
         ViewBag.previousPage = page == 1 ? 1 : page - 1;
         ViewBag.nextPage = page == exhibitResponse.Data.TotalPages ? exhibitResponse.Data.TotalPages : page + 1;
         //var temp = exhibitResponse.Data;
@@ -52,8 +58,8 @@ public class Exhibit : Controller
         }
         return View(exhibitResponse.Data.Items);
     }
-    private IActionResult NotFound(object errorMessage)
+    private IActionResult NotFound(object? errorMessage)
     {
-        throw new NotImplementedException();
+        return new NotFoundObjectResult(errorMessage);
     }
 }

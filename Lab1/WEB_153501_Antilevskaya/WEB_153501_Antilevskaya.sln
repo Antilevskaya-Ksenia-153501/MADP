@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Antilevskaya.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Antilevskaya.API", "WEB_153501_Antilevskaya.API\WEB_153501_Antilevskaya.API.csproj", "{AC0E128C-2A35-48D4-B70B-CD197B63419F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Antilevskaya.IdentityServer", "WEB_153501_Antilevskaya.IdentityServer\WEB_153501_Antilevskaya.IdentityServer.csproj", "{D58E5511-775C-45E5-A479-7BA58AC26A27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Antilevskaya.IdentityServer", "WEB_153501_Antilevskaya.IdentityServer\WEB_153501_Antilevskaya.IdentityServer.csproj", "{D58E5511-775C-45E5-A479-7BA58AC26A27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Antilevskaya.Tests", "WEB_153501_Antilevskaya.Tests\WEB_153501_Antilevskaya.Tests.csproj", "{4FB84453-A6F6-4866-BA15-DC6A845AE962}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D58E5511-775C-45E5-A479-7BA58AC26A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D58E5511-775C-45E5-A479-7BA58AC26A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D58E5511-775C-45E5-A479-7BA58AC26A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB84453-A6F6-4866-BA15-DC6A845AE962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB84453-A6F6-4866-BA15-DC6A845AE962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB84453-A6F6-4866-BA15-DC6A845AE962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB84453-A6F6-4866-BA15-DC6A845AE962}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
