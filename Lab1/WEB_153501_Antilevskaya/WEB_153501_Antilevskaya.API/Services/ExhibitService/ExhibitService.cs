@@ -9,9 +9,9 @@ public class ExhibitService : IExhibitService
 {
     private readonly int _maxSizePage = 20;
     private readonly AppDbContext _context;
-    private readonly IWebHostEnvironment _env;
-    private readonly IConfiguration _configuration;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IWebHostEnvironment? _env;
+    private readonly IConfiguration? _configuration;
+    private readonly IHttpContextAccessor? _httpContextAccessor;
 
     public ExhibitService(AppDbContext context, IWebHostEnvironment env, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
     {
