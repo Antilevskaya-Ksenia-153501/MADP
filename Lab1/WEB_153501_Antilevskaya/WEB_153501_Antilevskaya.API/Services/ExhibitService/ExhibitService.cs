@@ -7,7 +7,7 @@ using WEB_153501_Antilevskaya.Domain.Models;
 namespace WEB_153501_Antilevskaya.API.Services.ExhibitService;
 public class ExhibitService : IExhibitService
 {
-    private readonly int _maxSizePage = 20;
+    private readonly int _maxSizePage = 5;
     private readonly AppDbContext _context;
     private readonly IWebHostEnvironment? _env;
     private readonly IConfiguration? _configuration;
@@ -20,6 +20,8 @@ public class ExhibitService : IExhibitService
         _configuration = configuration;
         _httpContextAccessor = httpContextAccessor;
     }
+
+    public int MaxSizePage { get { return _maxSizePage; } private set { } }
     public Task<ResponseData<ListModel<Exhibit>>> GetExhibitListAsync(string? categoryNormalizedName, int pageNo = 1, int pageSize = 3)
     {
         if (pageSize > _maxSizePage)

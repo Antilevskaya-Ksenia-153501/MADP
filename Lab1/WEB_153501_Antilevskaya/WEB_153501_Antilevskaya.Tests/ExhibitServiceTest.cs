@@ -66,6 +66,7 @@ public class ExhibitServiceTest
         var result = service.GetExhibitListAsync(null, 3).Result;
 
         Assert.False(result.Success);
+        Assert.Equal(result.ErrorMessage, "No such page");
     }
 
     [Fact]
@@ -87,4 +88,31 @@ public class ExhibitServiceTest
         Assert.Equal(expectedExhibits, result.Data.Items);
     }
 
+    [Fact]
+    public void ServiceReturnsFilteredItemsByCategory()
+    {
+        var context = CreateContext();
+        var service = new ExhibitService(context, null, null, null);
+        var categoryNormalizedName = "category1";
+        var categoryId = 1;
+
+        var result = service.GetExhibitListAsync(categoryNormalizedName).Result;
+
+        Assert.IsType<ResponseData<ListModel<Exhibit>>>(result);
+        Assert.True(result.Success);
+        Assert.All(result.Data.Items, exhibit => Assert.Equal(categoryId, exhibit.CategoryId));
+    }
+
+    [Fact]
+    public void ServiceDoesNotAllowPageSizeGreaterThanMax()
+    {
+        var context = CreateContext();
+        var service = new ExhibitService(context, null, null, null);
+
+        var result = service.GetExhibitListAsync(null, 1, service.MaxSizePage + 1).Result;
+
+        Assert.IsType<ResponseData<ListModel<Exhibit>>>(result);
+        Assert.True(result.Success);
+        Assert.True(result.Data.Items.Count() <= service.MaxSizePage);
+    }
 }
