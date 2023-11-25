@@ -1,6 +1,5 @@
 //using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using WEB_153501_Antilevskaya.Api;
 using WEB_153501_Antilevskaya.Data;
 using WEB_153501_Antilevskaya.Services.CartService;
@@ -8,6 +7,7 @@ using WEB_153501_Antilevskaya.Services.CategoryService;
 using WEB_153501_Antilevskaya.Services.ExhibitService;
 using WEB_153501_Antilevskaya.Domain.Models;
 using Serilog;
+using WEB_153501_Antilevskaya.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,8 +65,6 @@ var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
     .CreateLogger();
 
-logger.Information("Hello, world!");
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -106,5 +104,7 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapRazorPages().RequireAuthorization();
+
+app.UseMiddleware<LoggingMiddleware>(logger);
 
 app.Run();

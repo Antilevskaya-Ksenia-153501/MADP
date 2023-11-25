@@ -1,4 +1,3 @@
-2023-11-25 15:54:27.804 +03:00 [INF] Hello, world!
-2023-11-25 15:56:36.132 +03:00 [INF] Hello, world!
-2023-11-25 15:57:05.717 +03:00 [INF] Hello, world!
-2023-11-25 15:58:02.269 +03:00 [INF] Hello, world!
+
+2023-11-25 17:03:15.365 +03:00 [INF] ---> request /Exhibit/67 returns 404
+2023-11-25 17:03:22.234 +03:00 [INF] ---> request /Exhibit/6 returns 404
