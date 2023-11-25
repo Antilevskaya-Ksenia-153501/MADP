@@ -7,6 +7,7 @@ using WEB_153501_Antilevskaya.Services.CartService;
 using WEB_153501_Antilevskaya.Services.CategoryService;
 using WEB_153501_Antilevskaya.Services.ExhibitService;
 using WEB_153501_Antilevskaya.Domain.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +54,18 @@ builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 builder.Services.AddRazorPages();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+
+var configuration = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+        .Build();
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
+logger.Information("Hello, world!");
 
 var app = builder.Build();
 
