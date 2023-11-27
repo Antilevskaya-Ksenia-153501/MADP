@@ -55,6 +55,15 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     options.ClientSecret = "copy client secret from Google here";
                 });
             builder.Services.AddControllers();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("BlazorWasmPolicy", builder =>
+                {
+                    builder.WithOrigins("https://localhost:7264")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
 
             return builder.Build();
         }
@@ -70,6 +79,7 @@ namespace WEB_153501_Antilevskaya.IdentityServer
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors("BlazorWasmPolicy");
             app.UseIdentityServer();
             app.UseAuthorization();
 

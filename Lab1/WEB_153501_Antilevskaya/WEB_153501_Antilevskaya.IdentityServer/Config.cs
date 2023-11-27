@@ -48,6 +48,19 @@ namespace WEB_153501_Antilevskaya.IdentityServer
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "api.read", "api.write" }
                 },
+
+                new Client
+                {
+                    ClientId = "blazorApp",
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RequireClientSecret = false,
+                    RedirectUris = { "https://localhost:7264/authentication/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:7264/authentication/logout-callback" },
+
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile", "api.read", "api.write" }
+                },
             };
     }
 }
