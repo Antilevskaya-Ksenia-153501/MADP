@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using WEB_153501_Antilevskaya.BlazorWasm;
+using WEB_153501_Antilevskaya.BlazorWasm.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+var config = builder.Configuration;
+var apiServer = config.GetSection("ApiSettings:ApiUri").Value;
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiServer!) });
+
+builder.Services.AddScoped<IDataService, DataService>();
 
 builder.Services.AddOidcAuthentication(options =>
 {
