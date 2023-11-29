@@ -23,6 +23,7 @@ public class ExhibitsController : Controller
     }
 
     [HttpGet("{category?}/{pageNo?}")]
+    [Authorize]
     public async Task<ActionResult<ResponseData<List<Exhibit>>>> GetExhibits(string? category = null ,int pageNo = 1,int pageSize = 3)
     {
         if (int.TryParse(category, out int parsedPageNo))

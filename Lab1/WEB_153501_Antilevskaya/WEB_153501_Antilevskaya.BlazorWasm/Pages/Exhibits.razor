@@ -1,0 +1,48 @@
+﻿@page "/exhibits"
+@inject IDataService DataService
+
+<PageTitle>Exhibits</PageTitle>
+
+<AuthorizeView>
+
+    <Authorized>
+        <p>This component demonstrates fetching data from the server.</p>
+        @if (DataService.ObjectsList == null)
+        {
+        <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var exhibit in DataService.ObjectsList)
+                    {
+                            <tr>
+                                <td>@exhibit.Title</td>
+                                <td>@exhibit.Description</td>
+                            </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </Authorized>
+
+    <NotAuthorized>
+        <h3>You should authorize first!!!</h3>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await DataService.GetProductListAsync(null);
+    }
+}
