@@ -1,0 +1,47 @@
+﻿@inject IDataService DataService
+
+<div class="col-2 border-2">
+    <ul class="nav ">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle"
+               data-bs-toggle="dropdown"
+               href="#"
+               role="button"
+               aria-expanded="false">
+                @SelectedCategory
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" @onclick="() => SelectCategory(null)">All</a>
+                </li>
+                @foreach (var item in DataService.Categories)
+                {
+                    <li>
+                        <a class="dropdown-item" @onclick="() => SelectCategory(item.NormalizedName)">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+    </ul>
+</div>
+
+@code {
+    [Parameter]
+    public string SelectedCategory { get; set; }
+
+    [Parameter]
+    public EventCallback<string> CategoryChanged { get; set; }
+
+    private async Task SelectCategory(string category)
+    {
+        SelectedCategory = category;
+        await CategoryChanged.InvokeAsync(category);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DataService.GetCategoryListAsync();
+    }
+}
