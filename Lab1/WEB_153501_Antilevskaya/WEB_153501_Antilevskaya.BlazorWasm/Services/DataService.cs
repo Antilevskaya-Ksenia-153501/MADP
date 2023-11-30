@@ -27,6 +27,8 @@ namespace WEB_153501_Antilevskaya.BlazorWasm.Services
             };
             _tokenProvider = tokenProvider;
         }
+
+        public event Action DataLoaded;
         public List<Category> Categories { get; set; }
         public List<Exhibit>? ObjectsList { get; set; }
         public bool Success { get; set; } = true; 
@@ -64,6 +66,7 @@ namespace WEB_153501_Antilevskaya.BlazorWasm.Services
                         ObjectsList = responseResult.Data.Items;
                         TotalPages = responseResult.Data.TotalPages;
                         CurrentPage = responseResult.Data.CurrentPage;
+                        OnDataLoaded();
                     }
                     catch (JsonException ex)
                     {
@@ -142,6 +145,9 @@ namespace WEB_153501_Antilevskaya.BlazorWasm.Services
             }
 
         }
-
+        private void OnDataLoaded()
+        {
+            DataLoaded?.Invoke();
+        }
     }
 }

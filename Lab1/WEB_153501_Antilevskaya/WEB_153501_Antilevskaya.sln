@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Antilevskaya.Ide
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Antilevskaya.Tests", "WEB_153501_Antilevskaya.Tests\WEB_153501_Antilevskaya.Tests.csproj", "{4FB84453-A6F6-4866-BA15-DC6A845AE962}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153501_Antilevskaya.BlazorWasm", "WEB_153501_Antilevskaya.BlazorWasm\WEB_153501_Antilevskaya.BlazorWasm.csproj", "{AD3F5B7A-FCF4-4626-9B6B-94BA42D2A4F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_153501_Antilevskaya.BlazorWasm", "WEB_153501_Antilevskaya.BlazorWasm\WEB_153501_Antilevskaya.BlazorWasm.csproj", "{AD3F5B7A-FCF4-4626-9B6B-94BA42D2A4F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

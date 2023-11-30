@@ -1,5 +1,4 @@
 ﻿@page "/exhibits"
-@inject IDataService DataService
 
 <PageTitle>Exhibits</PageTitle>
 
@@ -9,27 +8,11 @@
         <p>This component demonstrates fetching data from the server.</p>
         @if (DataService.ObjectsList == null)
         {
-        <p><em>Loading...</em></p>
+            <p><em>Loading...</em></p>
         }
         else
         {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var exhibit in DataService.ObjectsList)
-                    {
-                            <tr>
-                                <td>@exhibit.Title</td>
-                                <td>@exhibit.Description</td>
-                            </tr>
-                    }
-                </tbody>
-            </table>
+            <ExhibitsList ></ExhibitsList>
         }
     </Authorized>
 
@@ -41,8 +24,11 @@
 
 
 @code {
+    [Inject]
+    public IDataService DataService { get; set; }
     protected override async Task OnInitializedAsync()
     {
         await DataService.GetProductListAsync(null);
     }
 }
+

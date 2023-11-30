@@ -1,0 +1,33 @@
+﻿@inject IDataService DataService
+@implements IDisposable
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exhibit in DataService.ObjectsList)
+        {
+            <tr>
+                <td>@exhibit.Title</td>
+                <td>@exhibit.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

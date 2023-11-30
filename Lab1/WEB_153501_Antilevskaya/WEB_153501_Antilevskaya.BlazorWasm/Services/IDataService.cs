@@ -4,6 +4,7 @@ namespace WEB_153501_Antilevskaya.BlazorWasm.Services
 {
     public interface IDataService
     {
+        event Action DataLoaded;
         List<Category> Categories { get; set; }
         List<Exhibit> ObjectsList { get; set; }
 
