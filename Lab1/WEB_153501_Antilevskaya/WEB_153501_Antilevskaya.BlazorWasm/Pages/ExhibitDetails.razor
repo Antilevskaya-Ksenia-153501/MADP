@@ -1,0 +1,41 @@
+﻿@using WEB_153501_Antilevskaya.Domain.Entities;
+
+<style>
+	.exhibit-details-container {
+		display: flex;
+		align-items: center;
+	}
+
+	.exhibit-image {
+		flex: 0 0 auto;
+		margin-right: 20px;
+	}
+
+	.exhibit-info {
+		flex: 1 1 auto;
+	}
+</style>
+
+
+@if (SelectedExhibit is not null)
+{
+	<div class="exhibit-details-container">
+		<div class="exhibit-image">
+			@if (!string.IsNullOrEmpty(SelectedExhibit.Image))
+			{
+				<img src="@SelectedExhibit.Image" alt="Exhibit Image" width="400" height="300" />
+			}
+		</div>
+		<div class="exhibit-info">
+			<h2>@SelectedExhibit.Title</h2>
+			<p>@SelectedExhibit.Description</p>
+			<p>Price: @SelectedExhibit.Price</p>
+		</div>
+	</div>
+}
+
+
+@code {
+    [Parameter]
+    public Exhibit SelectedExhibit { get; set; }
+}

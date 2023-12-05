@@ -6,6 +6,7 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -14,12 +15,16 @@
             <tr>
                 <td>@exhibit.Title</td>
                 <td>@exhibit.Description</td>
+                <td><button class="btn btn-primary" @onclick="() => ExhibitSelected.Invoke(exhibit.Id)">Подробнее</button></td>
             </tr>
         }
     </tbody>
 </table>
 
 @code {
+
+    [Parameter]
+    public Action<int> ExhibitSelected{ get; set; }
 
     protected override void OnInitialized()
     {

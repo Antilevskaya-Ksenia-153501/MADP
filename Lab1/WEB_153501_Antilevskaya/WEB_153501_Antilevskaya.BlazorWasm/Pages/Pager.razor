@@ -1,0 +1,43 @@
+﻿@inject IDataService DataService
+
+
+<div>
+    @if (DataService.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <button class="page-link" aria-label="Previous" disabled="@IsFirstPage" @onclick="() => ChangePage(DataService.CurrentPage - 1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                <li class="page-item"><button class="btn page-link @(1 == CurrentPage ? "active" : "")" @onclick="() => ChangePage(1)">1</button></li>
+                <li class="page-item"><button class="btn page-link @(2 == CurrentPage ? "active" : "")" @onclick="() => ChangePage(2)">2</button></li>
+                <li class="page-item"><button class="btn page-link @(3 == CurrentPage ? "active" : "")" @onclick="() => ChangePage(3)">3</button></li>
+                <li class="page-item">
+                    <button class="page-link" aria-label="Next" disabled="@IsLastPage" @onclick="() => ChangePage(DataService.CurrentPage + 1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
+
+
+@code {
+    [Parameter] public EventCallback<int> PageChanged { get; set; }
+    private bool IsFirstPage => DataService.CurrentPage == 1;
+    private bool IsLastPage => DataService.CurrentPage == DataService.TotalPages;
+    public int CurrentPage { get; set; } = 1;
+
+    private async Task ChangePage(int page)
+    {
+        if (page >= 1 && page <= DataService.TotalPages)
+        {
+            DataService.CurrentPage = page;
+            CurrentPage = page;
+            await PageChanged.InvokeAsync(DataService.CurrentPage);
+        }
+    }
+}
